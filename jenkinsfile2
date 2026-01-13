@@ -8,10 +8,10 @@ pipeline {
     }
 
     environment {
-        PROJECT_NAME = "capge-jenkins"
-        GIT_REPO_URL = "https://github.com/SRINJOY-2004/capge-jenkins.git"
+        PROJECT_NAME = "Jenkinpipeline"
+        GIT_REPO_URL = "https://github.com/Priyanshu0880singh/Jenkinpipeline.git"
         SONAR_ENV = "sonarqube"
-        NOTIFY_EMAIL = "srinjoy.kundu48@gmail.com"
+        NOTIFY_EMAIL = "singhpriyanshu0880@gmail.com"
     }
 
     stages {
