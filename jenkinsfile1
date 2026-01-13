@@ -1,1 +1,51 @@
+pipeline {
+    agent any
 
+    stages {
+        stage('Git Checkout') {
+            steps {
+                git branch: 'main', credentialsId: '1', url: 'https://github.com/Priyanshu0880singh/private-repo'
+            }
+        }
+        stage('test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('scanning') {
+            steps {
+                withSonarQubeEnv('sonarqube') {
+                    sh 'mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar'
+                }
+            }
+        }
+
+        stage('Package') {
+            steps {
+                sh 'mvn package'
+            }
+        }
+    }
+
+    post {
+        always {
+            emailext(
+                to: 'singhpriyanshu0880@gmail.com',
+                subject: "Build ${currentBuild.currentResult}: ${env.JOB_NAME}",
+                body: """
+Hello,
+
+The Jenkins build has completed.
+
+Job Name   : ${env.JOB_NAME}
+Build No   : ${env.BUILD_NUMBER}
+Status     : ${currentBuild.currentResult}
+Build URL  : ${env.BUILD_URL}
+
+Regards,
+Jenkins
+"""
+            )
+        }
+    }
+}
